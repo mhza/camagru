@@ -4,11 +4,13 @@ echo "
 <html>
   <head>
    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">
+   <script type=\"text/javascript\" src=\"cam_ctrl.js\" async></script>
+
   </head>
 
   <body>
     <div class=\"flex-container\">";
-    print_r("index ".$_POST);
+    // print_r("index ".$_POST);
     // print_r($_SESSION);
     include 'view/header.php';
     include 'view/side.php';
