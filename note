@@ -1,0 +1,24 @@
+$homepage = file_get_contents('http://localhost:8080/camagru/view/layout.php');
+echo $homepage;
+
+echo "<script>window.location.replace(\"index.php?log_in=1\");</script>";
+
+
+try {
+  $dbh = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+  $userDao = new UserDao($dbh);
+  $user2 =  $userDao->getByMailPwd($_POST['email'], $_POST['pwd']);
+
+} catch (PDOException $e) {
+    echo 'Échec lors de la connexion : ' . $e->getMessage();
+}
+
+
+    $prepared_statement->bindValue(':mail', $mail);
+    $prepared_statement->bindValue(':pwd', $pwd);
+    $prepared_statement->execute();
+<=>
+    $prepared_statement->execute(array (':mail' => $mail, ':pwd' => $pwd));
+
+
+    $password = hash("whirlpool", $_POST['passwd']);
