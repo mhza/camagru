@@ -4,7 +4,6 @@ echo "
 <html>
   <head>
    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">
-   <script type=\"text/javascript\" src=\"cam_ctrl.js\" async></script>
 
   </head>
 

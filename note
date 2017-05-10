@@ -22,3 +22,6 @@ try {
 
 
     $password = hash("whirlpool", $_POST['passwd']);
+
+
+    <script type=\"text/javascript\" src=\"cam_ctrl.js\" async></script>
