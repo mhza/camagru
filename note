@@ -25,3 +25,94 @@ try {
 
 
     <script type=\"text/javascript\" src=\"cam_ctrl.js\" async></script>
+
+
+    var element = document.getElementById("header");
+    element.innerHTML = "New Header";
+
+
+
+
+
+
+
+
+
+
+    <header> <h1>Camagru</h1>
+    <?PHP
+        if (!empty($_SESSION['login']) && empty($_GET['log_out'])) {
+         echo " Hi ". $_SESSION['login']."<a class='log' href='index.php?log_out=1'> LOG OUT </a>";
+        }
+        else if(empty($_GET)){
+
+        }
+        else{
+          if (!empty($_GET['log_out'])){
+            session_destroy();
+          }
+        }
+    ?>
+    <content id='content'>
+      <button type='button' class='log' onclick='display_log_form()'> LOG IN </button>
+      <button type='button' class='log' onclick='display_sign_form()'> SIGN IN </button>
+    </content>
+
+    <div id='logform' style="visibility:hidden;">
+      <?php if (!empty($_GET['kol']))
+            echo "Try again"; ?>
+      <form class='log' action="view/header_ctrl.php" method="post">
+        <label for="email"></label><br>
+          <input placeholder="@" type="mail" name="email"/><br/>
+        <label for="pwd"></label><br>
+          <input placeholder="password"  type="password" name="pwd"/><br/>
+
+        <br><input class='button-bk' type="submit" name="clic" value = "clic"/>
+        <button type='button' class='log' onclick='display_init()'> Cancel </button>
+    </div>
+
+    <div id='signform' style="visibility:hidden;">
+      <?php if (!empty($_GET['kos']))
+            echo "Try again"; ?>
+      <form class='log' action="view/header_ctrl.php" method="post">
+        <label for="email"></label><br>
+          <input placeholder="@" type="email" name="email"/><br/>
+        <label for="login"></label><br>
+          <input placeholder="login" type="text" name="login"/><br/>
+        <label for="pwd"></label><br>
+          <input placeholder="password" type="password" name="pwd"/><br/>
+        <label for="pwd2"></label><br>
+          <input placeholder="confirm password" type="password" name="pwd2"/><br/>
+        <input class='button-bk' type="submit" name="clic"value = "clic" /><br/>
+        <button type='button' class='log' onclick='display_init()'> Cancel </button>
+      </form>
+    </div>
+
+    <div id='init' style="visibility:hidden;">
+      <button type='button' class='log' onclick='display_log_form()'> LOG IN </button>
+      <button type='button' class='log' onclick='display_sign_form()'> SIGN IN </button>
+    </div>
+
+    <div id='logout' style="visibility:hidden;">
+      <button type='button' class='log' onclick='display_init()'> LOG OUT </button>
+    </div>
+
+    </header>
+
+    <script>
+    function display_log_form()
+    {
+      var element = document.getElementById("content");
+      element.innerHTML = document.getElementById("logform").innerHTML;
+    }
+    function display_sign_form()
+    {
+      var element = document.getElementById("content");
+      element.innerHTML = document.getElementById("signform").innerHTML;
+    }
+    function display_init()
+    {
+      var element = document.getElementById("content");
+      element.innerHTML =document.getElementById("init").innerHTML;
+    }
+    </script>

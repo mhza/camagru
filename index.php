@@ -18,6 +18,7 @@ echo "
     echo "
         <footer>Copyright &copy;</footer>
         </div>
+        <script type=\"text/javascript\" src=\"view/cam_ctrl.js\" async></script>
       </body>
     </html>";
 ?>
