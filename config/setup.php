@@ -20,6 +20,25 @@ $sql = "INSERT INTO `Users` (`id`, `login`, `mail`, `pwd`, `confKey`) VALUES
 (1, 'mh', 'mhaziza@student.42.fr', '42', '2'),
 (2, 'tl', 'tl@st.fr', '42', '0'),
 (3, 'marine', 'marinehaziza@gmail.com', '42', '2')";
+
 $dbh->exec( $sql );
+
+$sql = "CREATE TABLE IF NOT EXISTS Images (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+likes INT(6) UNSIGNED,
+mail VARCHAR(250) NOT NULL,
+name VARCHAR(250) NOT NULL,
+date DATE NOT NULL
+)";
+$dbh->exec( $sql );
+
+
+$sql = "CREATE TABLE IF NOT EXISTS Comments (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+idUser INT(6) UNSIGNED
+)";
+
+$dbh->exec( $sql );
+
 $dbh = null;
 ?>

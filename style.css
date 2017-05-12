@@ -49,6 +49,12 @@ input placeholder {
 .main {
     text-align: left;
 }
+#webcam{
+  visibility: none;
+}
+#upload{
+  visibility: none;
+}
 
 /*form.logform {
 	margin: 0 auto;

@@ -4,6 +4,7 @@
       cover        = document.querySelector('#cover'),
       canvas       = document.querySelector('#canvas'),
       photo        = document.querySelector('#photo'),
+      filter        = document.getElementById('filter').value,
       startbutton  = document.querySelector('#startbutton'),
       width = 320,
       height = 0;
@@ -56,17 +57,17 @@
 
 function upload_picture() {
   var http = new XMLHttpRequest();
-  var url = "view/main.php";
-  var params =  "imgwc=" + JSON.stringify({image: canvas.toDataURL()});
+  var url = "view/main_ctrl.php";
+  var params = "filter=" + document.getElementById('filter').value + "&imgwc=" + JSON.stringify({image: canvas.toDataURL()});
   console.log(params);
-  http.open("POST", url);
-  // Send the proper header information along with the request
+  http.open("POST", url, true);
   http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   http.onreadystatechange = function() {//Call a function when the state changes.
       if(http.readyState == 4 && http.status == 200) {
-          alert(http.responseText);
+          console.log(http.responseText);
       }
   }
+  // console.log(params);
   http.send(params);
 }
 

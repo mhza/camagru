@@ -44,9 +44,9 @@ class UserDao
     $key = $login . $user->getMail() . date('mY');
     $key = md5($key);
     $q = 'INSERT INTO users(id, mail, login, pwd, confKey) VALUES(:id, :mail, :login, :pwd, :confKey)';
-    echo $user->getMail()."  ". $user->getPwd()." ". $user->getLogin();
+    // echo $user->getMail()."  ". $user->getPwd()." ". $user->getLogin();
     $id = $this->getMaxId() + 1;
-    $user->__toString();
+    // $user->__toString();
     if ($id > 0 && ($pstatement = $this->_db->prepare($q))
     && $pstatement->execute(array (':id' => $id, ':mail' => $user->getMail(), ':pwd' => $user->getPwd(), ':login' => $login, ':confKey' => $key)))
             return $user;
@@ -98,8 +98,8 @@ class UserDao
 
   public function getByMailKey($mail, $key)
   {
-    echo $mail;
-    echo $key;
+    // echo $mail;
+    // echo $key;
     $q = 'SELECT * FROM users WHERE mail = :mail AND confKey = :key';
     if (($pstatement = $this->_db->prepare($q)) && $pstatement->execute(array (':mail' => $mail, ':key' => $key)))
     {
