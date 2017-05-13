@@ -26,7 +26,7 @@ $path = getcwd();
     TAKE ONE ?
     <video id="video"></video>
  		<input id="filter" type="hidden" name = "filter"></input>
- 		<button id="startbutton">Take photo</button>
+ 		<button id="startbutton" disabled="true">Take photo</button>
  		<canvas id="canvas"></canvas>
  	</div><br><br>
 
@@ -36,9 +36,9 @@ $path = getcwd();
 UPLOAD ONE ?<br>
 <form action="view/main_ctrl.php" method="post" enctype="multipart/form-data">
     Select image to upload:
-    <input type="file" name="fileToUpload" id="fileToUpload">
+    <input type="file" name="fileToUpload" id="fileToUpload" disabled="true">
     <input id="filterUpload" type="hidden" name = "filterUpload" ></input>
-    <input type="submit" value="Upload Image" name="submit">
+    <input id ="uploadbtn" type="submit" value="Upload Image" name="submit" disabled="true">
 </form>
 </div>
 
@@ -55,6 +55,9 @@ function is_selected(filter){
   element.innerHTML = "SELECTED <br><img src='http://localhost:8080/camagru/filtres/" + filter + "' id='"+ filter +"' style='width:42px;height:42px;border:0;'>";
   document.getElementById("filter").value = filter;
   document.getElementById("filterUpload").value = filter;
+  document.getElementById("startbutton").disabled = false;
+  document.getElementById("uploadbtn").disabled = false;
+  document.getElementById("fileToUpload").disabled = false;
   // document.getElementById("webcam").visiblity="visible";
   // document.getElementById("upload").visiblity="visible";
 }

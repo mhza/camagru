@@ -1,10 +1,9 @@
 <?php
-include '../model/Image.class.php';
-
-include '../persistence/ImageDao.class.php';
+include_once '../model/Image.class.php';
+include_once '../persistence/ImageDao.class.php';
 
 // include '../config/database.php';
-
+session_start();
 $location = '../index.php';
 $target_dir = "../uploads/";
 $param_name = str_replace(' ', '_', basename($_FILES["fileToUpload"]["name"]));
@@ -46,7 +45,7 @@ if(isset($_POST["submit"])) {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 //            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br>";
   //          echo "<script>window.location.replace(\"main_ctrl.php?filter=".$_POST["filterUpload"]."&upload=". $param_name . ");</script>";
-              $location = "main_ctrl.php?filter=".$_POST["filterUpload"]."&upload=". $param_name;
+              $location = "../index.php?filter=".$_POST["filterUpload"]."&upload=". $param_name;
         } else {
             // echo "Sorry, there was an error uploading your file.<br>";
             $location = "../index.php?upload=ko";
@@ -54,60 +53,10 @@ if(isset($_POST["submit"])) {
     }
 }
 
-if (!empty($_POST['imgwc']) && !empty($_POST['filter']))
-{
-// $filter = $_POST['filter'];
-    $basename = getcwd() . '/../';
-  $img_name = "img64_".date('mdY').'png';
-  $rawData = json_decode($_POST['imgwc'])->image;
-//  $filteredData = explode(',', $rawData);
-  $filteredData = str_replace('data:image/png;base64,', '', $rawData);
-  $filteredData = str_replace(' ', '+', $filteredData);
-  $unencoded = base64_decode($filteredData);
 
-  file_put_contents($basename . '/assembly/' . $img_name, $unencoded);
-  $im1 = imagecreatefrompng($basename . '/assembly/' . $img_name);
-  $im2 = imagecreatefrompng($basename . "/filtres/" . $_POST['filter']);
-  imagecopy($im1, $im2, 0, 0, 0, 0, 500, 500);
-  imagepng($im1, $basename . '/assembly/' . $img_name);
-  imagedestroy($im1);
-  imagedestroy($im2);
-  // echo "<img src='".$asmbly_dir.$img_name.".png'>";
-}
 
-if(!empty($_GET['upload']))
-{
-  $basename = getcwd(). '/../';
-  // $_GET['upload'] = str_replace(' ', '_', $_GET['upload']);
-  $img_name = substr($_GET['upload'], 0, -4) . '.png';
-    if(strcmp($_GET['upload'],"ko")){
-        // echo "<img src='http://localhost:8080/camagru/uploads/".$_GET['upload']."'>";
-        file_put_contents($img_name ,  $basename. $_GET['upload']);
-        $im1 = imagecreatefromjpeg(  $basename .'/uploads/'. $_GET['upload']);
-        $im2 = imagecreatefrompng(  $basename . "/filtres/". $_GET['filter']);
-        imagecopy($im1, $im2, 0, 0, 0, 0, 500, 500);
-        imagepng($im1,  $basename . '/assembly/' . $img_name );
-        imagedestroy($im1);
-        imagedestroy($im2);
-        // echo "<img src='".$asmbly_dir.$img_name."'>";
-      }
 
-}
-
-if (!empty($_GET['upload']))
-{
-  try {
-  	$dbh = new PDO('mysql:host=localhost;dbname=camagru', 'username', 'password');
-  	$imgDao = new ImageDao($dbh);
-  } catch (PDOException $e) {
-  		// echo 'Database access denied';
-  		// echo "<script>window.location.replace(\"../index.php?new_img=ko\");</script>";
-  }
-  file_put_contents("debug.txt",$imgDao->create("mhaziza@student.42.fr", $img_name));
-  $location = "side.php";
-  // file_put_contents("debug.txt",count($imgDao->getList()));
-  // $imgDao->create("mhaziza@student.42.fr");
-}
+file_put_contents("debug.txt", "noped");
 header("Location: $location");
 exit();
 

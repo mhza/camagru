@@ -57,7 +57,7 @@
 
 function upload_picture() {
   var http = new XMLHttpRequest();
-  var url = "view/main_ctrl.php";
+  var url = "index.php";
   var params = "filter=" + document.getElementById('filter').value + "&imgwc=" + JSON.stringify({image: canvas.toDataURL()});
   console.log(params);
   http.open("POST", url, true);
@@ -69,6 +69,7 @@ function upload_picture() {
   }
   // console.log(params);
   http.send(params);
+  window.location.reload(true);
 }
 
 

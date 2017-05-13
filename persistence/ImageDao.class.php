@@ -17,7 +17,7 @@ class ImageDao
     $q = 'INSERT INTO `images`(`id`, `likes`, `mail`, `date`, `name`) VALUES (:id,  :likes, :mail, :dateofday, :name)';
     $id = $this->getMaxId() + 1;
     if ($id > 0 && ($pstatement = $this->_db->prepare($q)) &&
-    $pstatement->execute(array (':id' => $id, ':mail' => $mail, ':dateofday' => date(ymd), ':likes' => 0, 'name'=>$name)))
+    $pstatement->execute(array (':id' => $id, ':mail' => $mail, ':dateofday' => date(Ymd), ':likes' => 0, 'name'=>$name)))
             return $id;
   }
 
@@ -29,7 +29,7 @@ class ImageDao
   public function getList()
   {
     $gallery = [];
-    $q = $this->_db->query('SELECT * FROM Images ORDER BY date');
+    $q = $this->_db->query('SELECT * FROM Images ORDER BY id desc limit 5');
     while ($datas = $q->fetch(PDO::FETCH_ASSOC))
     {
       $img = new Image();
