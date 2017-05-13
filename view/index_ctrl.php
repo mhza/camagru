@@ -2,17 +2,17 @@
 include_once 'model/Image.class.php';
 include_once 'persistence/ImageDao.class.php';
 
-if(!empty($_GET['upload'])&& !empty($_GET['filter']))
+if(!empty($_SESSION['upload'])&& !empty($_SESSION['filter']))
 {
   $basename = getcwd();
   // $_GET['upload'] = str_replace(' ', '_', $_GET['upload']);
   // date("ydm").date("H:i:s")
-  $img_name = substr($_GET['upload'], 0, -4) ."_".date("ydm").date("H:i:s"). '.png';
-    if(strcmp($_GET['upload'],"ko")){
+  $img_name = substr($_SESSION['upload'], 0, -4) ."_".date("ydm").date("H:i:s"). '.png';
+    if(strcmp($_SESSION['upload'],"ko")){
         // echo "<img src='http://localhost:8080/camagru/uploads/".$_GET['upload']."'>";
         // file_put_contents($img_name ,  $basename. $_GET['upload']);
-        $im1 = imagecreatefromjpeg(  $basename .'/uploads/'. $_GET['upload']);
-        $im2 = imagecreatefrompng(  $basename . "/filtres/". $_GET['filter']);
+        $im1 = imagecreatefromjpeg(  $basename .'/uploads/'. $_SESSION['upload']);
+        $im2 = imagecreatefrompng(  $basename . "/filtres/". $_SESSION['filter']);
         imagecopy($im1, $im2, 0, 0, 0, 0, 500, 500);
         imagepng($im1,  $basename . '/assembly/' . $img_name );
         imagedestroy($im1);
@@ -29,6 +29,8 @@ if(!empty($_GET['upload'])&& !empty($_GET['filter']))
         $imgDao->create($_SESSION['mail'], $img_name);
 
       }
+      $_SESSION['upload']="";
+      $_SESSION['filter']="";
 
 }
 
@@ -62,7 +64,56 @@ if (!empty($_POST['imgwc']) && !empty($_POST['filter']))
   // echo "<img src='".$asmbly_dir.$img_name.".png'>";
 }
 
+if(($_POST['like'] != "" )&& !empty($_POST['id']))
+{
+  try {
+    $dbh = new PDO('mysql:host=localhost;dbname=camagru', 'username', 'password');
+    $imgDao = new ImageDao($dbh);
+  } catch (PDOException $e) {
+  }
+  $imgDao->updateLike($_POST['id'], $_POST['like']);
+  if ($_POST['is_liked'] == 1)
+    $imgDao->deleteLike($_POST['id'], $_SESSION['idUser']);
+  else {
+    $imgDao->createLike($_POST['id'], $_SESSION['idUser']);
+  }
+  // header("Location :index.php");
+}
 
+if($_POST['comment'] != "" && !empty($_POST['idImg']))
+{
+  try {
+    $dbh = new PDO('mysql:host=localhost;dbname=camagru', 'username', 'password');
+    $imgDao = new ImageDao($dbh);
+  } catch (PDOException $e) {
+  }
+  $imgDao->addComments($_POST['idImg'], $_SESSION['idUser'], $_POST['comment']);
+
+}
+
+if($_POST['delete'] != "")
+{
+  try {
+    $dbh = new PDO('mysql:host=localhost;dbname=camagru', 'username', 'password');
+    $imgDao = new ImageDao($dbh);
+  } catch (PDOException $e) {
+  }
+  $imgDao->delete($_POST['delete']);
+
+}
+
+if($_POST['initpwdmail'] != "")
+{
+  try {
+    $dbh = new PDO('mysql:host=localhost;dbname=camagru', 'username', 'password');
+    $userDao = new UserDao($dbh);
+  } catch (PDOException $e) {
+  }
+  $id = $userDao->getIdByMail($_POST['initpwdmail']);
+  if ($id)
+    $userDao->init_pwd_mail($userDao->get($id));
+
+}
 
 
  ?>

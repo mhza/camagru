@@ -45,7 +45,10 @@ if(isset($_POST["submit"])) {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 //            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br>";
   //          echo "<script>window.location.replace(\"main_ctrl.php?filter=".$_POST["filterUpload"]."&upload=". $param_name . ");</script>";
-              $location = "../index.php?filter=".$_POST["filterUpload"]."&upload=". $param_name;
+  // $location = "../index.php?filter=".$_POST["filterUpload"]."&upload=". $param_name;
+    $_SESSION['filter']=$_POST["filterUpload"];
+    $_SESSION['upload']= $param_name;
+              $location = "../index.php";
         } else {
             // echo "Sorry, there was an error uploading your file.<br>";
             $location = "../index.php?upload=ko";

@@ -27,8 +27,9 @@ if (!empty($_POST['email']) && !empty($_POST['pwd']) && !empty($_POST['pwd2']) &
 else if (!empty($_POST['email']) && !empty($_POST['pwd'])){
 			if (!($user =  $userDao->getByMailPwd($_POST['email'], $_POST['pwd'])))
 				echo "<script>window.location.replace(\"../index.php?log_in=1&ko=1\");</script>";
-			$_SESSION['login'] = $user->getLogin();
-			$_SESSION['mail'] = $user->getMail();
+				$_SESSION['idUser'] = $user->getId();
+				$_SESSION['login'] = $user->getLogin();
+				$_SESSION['mail'] = $user->getMail();
 }
 else if (!empty($_GET['key']) && !empty($_GET['mail'])){
 			if (($user =  $userDao->getByMailKey($_GET['mail'], $_GET['key'])))

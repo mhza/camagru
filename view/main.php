@@ -20,7 +20,7 @@ $path = getcwd();
 
 
 <div id = "selected"></div>
-
+<hr>
 
  <div id="webcam">
     TAKE ONE ?

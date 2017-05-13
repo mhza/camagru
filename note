@@ -1,3 +1,8 @@
+// element.style.color = "black";
+// document.getElementById("filter").value = filter;
+// document.getElementById("fileToUpload").disabled = false;
+// document.getElementById("webcam").visiblity="visible";
+
 $homepage = file_get_contents('http://localhost:8080/camagru/view/layout.php');
 echo $homepage;
 

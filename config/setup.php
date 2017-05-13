@@ -35,7 +35,16 @@ $dbh->exec( $sql );
 
 $sql = "CREATE TABLE IF NOT EXISTS Comments (
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
-idUser INT(6) UNSIGNED
+idUser INT(6) UNSIGNED,
+idImg INT(6) UNSIGNED,
+msg VARCHAR(250) NOT NULL
+)";
+
+$dbh->exec( $sql );
+
+$sql = "CREATE TABLE IF NOT EXISTS Likes (
+id INT(6) UNSIGNED PRIMARY KEY NOT NULL,
+idUser INT(6) UNSIGNED NOT NULL
 )";
 
 $dbh->exec( $sql );

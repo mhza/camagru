@@ -36,6 +36,19 @@ class UserDao
         mail($mail, 'Camagru confirmation mail', $message);
   }
 
+  function init_pwd_mail($user) {
+        $login =$user->getLogin();
+        $mail = $user->getMail();
+        $key = $mail . date('mY');
+        $key = md5($key);
+        $message = "
+        Dear " . $login . "
+        Clic here to reset your password;)\r\n
+        http://localhost:8080/camagru/view/header_ctrl.php?reset=$mail&key=$key";
+        $message = wordwrap($message, 70, "\r\n");
+        mail($mail, 'Camagru reset password mail', $message);
+  }
+
   public function add(User $user)
   {
     if ($this->getIdByMail($user->getMail()))
@@ -128,9 +141,9 @@ class UserDao
     $pstatement->bindValue(':confKey', $user->getConfKey());
     $pstatement->execute();
     $datas = $pstatement->fetch(PDO::FETCH_ASSOC);
-    print_r($datas);
-
+    // print_r($datas);
   }
+
 }
 
 // public function getList()
