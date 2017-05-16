@@ -35,17 +35,39 @@ class ImageDao
     $this->_db->exec('DELETE FROM comments WHERE idImg = '.$idImg);
   }
 
-  public function getList()
+  public function getList($page)
   {
     $gallery = [];
-    $q = $this->_db->query('SELECT * FROM Images ORDER BY id desc limit 5');
-    while ($datas = $q->fetch(PDO::FETCH_ASSOC))
+    $page = ($page - 1) * 5;
+    $q = 'SELECT * FROM Images ORDER BY id desc limit :page, 5';
+    $pstatement = $this->_db->prepare($q);
+    $pstatement->bindValue(':page', $page, PDO::PARAM_INT);
+    $pstatement->execute();
+    // echo $pstatement->queryString;
+    while ($datas = $pstatement->fetch(PDO::FETCH_ASSOC))
     {
       $img = new Image();
-      $img->hydrate($datas);
+      $img->hydrate((array)$datas);
       $gallery[] = $img;
     }
     return $gallery;
+  }
+  public function getImg($id)
+  {
+    $q = 'SELECT * FROM Images WHERE id = '.$id;
+    $pstatement = $this->_db->prepare($q);
+    $pstatement->execute();
+    $datas = $pstatement->fetch(PDO::FETCH_ASSOC);
+    $img = new Image();
+    $img->hydrate($datas);
+    return $img;
+  }
+
+  public function getImgCount()
+  {
+    $q = 'SELECT COUNT(*) FROM Images';
+    if (($pstatement = $this->_db->prepare($q)) && $pstatement->execute())
+      return $pstatement->fetchColumn();
   }
 
   public function updateLike($id, $likes)
@@ -77,6 +99,7 @@ class ImageDao
     $pstatement->execute();
     return ($pstatement->fetchColumn());
   }
+
   public function deleteLike($id, $idUser)
   {
     // echo "delete ".$id.$idUser;
@@ -104,6 +127,14 @@ class ImageDao
     $pstatement->bindValue(':msg', $comment);
     $pstatement->execute();
   }
+  function new_comment_mail($label_img, $mail, $com) {
+        $message = "
+        You have a new comment about $label_img :\n
+        \"$com\"\r\n";
+        $message = wordwrap($message, 70, "\r\n");
+        mail($mail, 'Camagru - new comment on your pic', $message);
+  }
 }
+
 
  ?>

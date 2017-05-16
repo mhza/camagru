@@ -31,7 +31,11 @@ input placeholder {
   color : pink;
   float : right;
 }
-
+.log2 {
+  display: inline-block;
+  margin-right :1%;
+  color : pink;
+}
 .flex-container {
     display: -webkit-flex;
     display: flex;

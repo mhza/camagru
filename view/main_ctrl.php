@@ -11,7 +11,7 @@ $target_file = $target_dir .$param_name ;
 $uploadOk = 1;
 $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 // Check if image file is a actual image or fake image
-if(isset($_POST["submit"])) {
+if(!empty($_POST["submit"]) && !empty($_FILES["fileToUpload"]["tmp_name"])) {
     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
     if($check !== false) {
     //    echo "File is an image - " . $check["mime"] . ".<br>";
@@ -27,7 +27,7 @@ if(isset($_POST["submit"])) {
     // }
     // Check file size
     if ($_FILES["fileToUpload"]["size"] > 500000) {
-       echo "Sorry, your file is too large.<br>";
+      //  echo "Sorry, your file is too large.<br>";
        $uploadOk = 0;
     }
     // Allow certain file formats
@@ -46,7 +46,7 @@ if(isset($_POST["submit"])) {
 //            echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br>";
   //          echo "<script>window.location.replace(\"main_ctrl.php?filter=".$_POST["filterUpload"]."&upload=". $param_name . ");</script>";
   // $location = "../index.php?filter=".$_POST["filterUpload"]."&upload=". $param_name;
-    $_SESSION['filter']=$_POST["filterUpload"];
+    $_SESSION['filter']= $_POST["filterUpload"];
     $_SESSION['upload']= $param_name;
               $location = "../index.php";
         } else {
@@ -55,11 +55,7 @@ if(isset($_POST["submit"])) {
         }
     }
 }
-
-
-
-
-file_put_contents("debug.txt", "noped");
+// file_put_contents("debug.txt", "noped");
 header("Location: $location");
 exit();
 

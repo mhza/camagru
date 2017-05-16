@@ -5,17 +5,20 @@ Class User {
   private $_login;
   private $_pwd;
   private $_confKey;
+  private $_active;
 
   public function getId(){return $this->_id;}
   public function getMail(){return $this->_mail;}
   public function getLogin(){return $this->_login;}
   public function getPwd(){return $this->_pwd;}
   public function getConfKey(){return $this->_confKey;}
+  public function getActive(){return $this->_active;}
   public function setId($id){$this->_id = $id;return;}
   public function setMail($mail){$this->_mail = $mail;return;}
   public function setLogin($login){$this->_login = $login;return;}
   public function setPwd($pwd){$this->_pwd = $pwd;return;}
   public function setConfKey($confKey){$this->_confKey = $confKey;return;}
+  public function setActive($active){$this->_active = $active;return;}
 
   public function hydrate(array $datas) {
     foreach ($datas as $key => $value)

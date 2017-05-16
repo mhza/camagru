@@ -21,7 +21,6 @@ $path = getcwd();
 
 <div id = "selected"></div>
 <hr>
-
  <div id="webcam">
     TAKE ONE ?
     <video id="video"></video>
@@ -58,6 +57,7 @@ function is_selected(filter){
   document.getElementById("startbutton").disabled = false;
   document.getElementById("uploadbtn").disabled = false;
   document.getElementById("fileToUpload").disabled = false;
+  document.getElementById("bigdiv").disabled = false;
   // document.getElementById("webcam").visiblity="visible";
   // document.getElementById("upload").visiblity="visible";
 }

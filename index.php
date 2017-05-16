@@ -17,10 +17,10 @@ echo "
     //   print_r($_SESSION);
     //   echo "yoyoyoyoyo";
     include 'view/header.php';
+    include 'view/side.php';
     if (!empty($_SESSION['login']))
     {
       // print_r($_SESSION);
-      include 'view/side.php';
       include 'view/main.php';
     }
 

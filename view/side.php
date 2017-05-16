@@ -1,19 +1,25 @@
 <side class="side">
- <h1>GALLERY</h1>
+ <h1>GALLERY
 
  <?php
- include_once 'model/Image.class.php';
- include_once 'persistence/ImageDao.class.php';
- try {
-   $dbh = new PDO('mysql:host=localhost;dbname=camagru', 'username', 'password');
-   $imgDao = new ImageDao($dbh);
- } catch (PDOException $e) {
-     // echo 'Database access denied';
-     // echo "<script>window.location.replace(\"../index.php?new_img=ko\");</script>";
- }
+   include_once 'model/Image.class.php';
+   include_once 'persistence/ImageDao.class.php';
+   try {
+     $dbh = new PDO('mysql:host=localhost;dbname=camagru', 'username', 'password');
+     $imgDao = new ImageDao($dbh);
+   } catch (PDOException $e) {
+        echo '/!\ Database access denied';
+        exit;
+       // echo "<script>window.location.replace(\"../index.php?new_img=ko\");</script>";
+   }
 
-   $list = $imgDao->getList();
-  //  print_R
+  if ($_GET['page'])
+      $page = $_GET['page'];
+  else {
+    $page = 1;
+  }
+   $list = $imgDao->getList($page);
+   echo " <".count($list)."></h1>";
    $count = 0;
    foreach ($list as $key=>$img)
     {
@@ -32,20 +38,29 @@
         $label ='LIKED';
       }
       // print_r($retCom);
-      echo "<div><img src = 'http://localhost:8080/camagru/assembly/".$img->getName()."' style='max-width: 280px;max-height:180px;width: 50%;'><br>
-       <button id = 'like".$count."' style='color:".$color.";' onclick='like_unlike(".$is_liked.", ".$count.", ".$idImg.", ".$img->getLikes().")'>".$label." </button> ".$img->getLikes();
-      $retCom = $imgDao->getComments($idImg);
-      // print_r($retCom);
-      echo " // ".count($retCom)." comments<br>";
-      foreach ($retCom as $key => $value) {
-        echo "> ".$value['msg']."<br>";
-      }
-    echo "
-    <input id = 'com".$count."' placeholder=\"yours\" maxlength='50' type=\"text\" name=\"com\"/>
-    <input onclick = 'new_comments( ".$idImg.", ".$count.")' class='button' type=\"submit\" name=\"clic\" value = \"+ \" /><br/>
-    ";
-    if (!strcmp($_SESSION['mail'],$img->getMail()) )
-      echo "<input onclick = 'deleteImg( ".$idImg.")' class='button-bk' type=\"submit\" name=\"delete\" value = \"DELETE \" />";
+      // if(!$idUser)
+      //   echo "<div><img src = 'http://localhost:8080/camagru/assembly/".$img->getName()."' style='max-width: 280px;max-height:180px;width: 50%;'><br>";
+      // else {
+        echo "<div><img src = 'http://localhost:8080/camagru/assembly/".$img->getName()."' style='max-width: 280px;max-height:180px;width: 50%;'><br>";
+        if($idUser)
+          echo "<button id = 'like".$count."' style='color:".$color.";' onclick='like_unlike(".$is_liked.", ".$count.", ".$idImg.", ".$img->getLikes().")'>".$label." </button> ";
+
+        $retCom = $imgDao->getComments($idImg);
+        // print_r($retCom);
+        echo $img->getLikes()." likes // ".count($retCom)." comments<br>";
+        foreach ($retCom as $key => $value) {
+          echo "> ".$value['msg']."<br>";
+        }
+    if($idUser)
+      echo "
+      <input id = 'com".$count."' placeholder=\"yours\" maxlength='50' type=\"text\" name=\"com\"/>
+      <input onclick = 'new_comments( ".$idImg.", ".$count.")' class='button-bk' type=\"submit\" name=\"clic\" value = \"+\" /><br/>
+      ";
+      if (!strcmp($_SESSION['mail'],$img->getMail()) )
+        echo "<input onclick = 'deleteImg( ".$idImg.")' class='button-bk' type=\"submit\" name=\"delete\" value = \"DELETE !!!\" />";
+      // }
+
+
 
     echo "<br/><hr>";
       ?>
@@ -55,8 +70,13 @@
       <?php
 
     }
+    $nbimg = $imgDao->getImgCount();
+    $nbpages = $nbimg%5 == 0? $nbimg/5 : $nbimg/5 + 1;
+    for ($i = 1; $i <= $nbpages; $i++)
+    {
+      echo "<a class='log2' href='index.php?page=".$i."'> ".$i." </a>";
+    }
   ?>
-
 </side>
 
 <script>
@@ -99,6 +119,20 @@ function new_comments(idImg, count){
 }
 
 function deleteImg(idImg){
+  var http = new XMLHttpRequest();
+  var url = "index.php";
+  var params = "delete=" + idImg;
+  http.open("POST", url, true);
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  http.onreadystatechange = function() {//Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+           window.location.reload(true);
+      }
+  }
+  http.send(params);
+}
+
+function next_page(page){
   var http = new XMLHttpRequest();
   var url = "index.php";
   var params = "delete=" + idImg;
