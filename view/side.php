@@ -71,10 +71,12 @@
 
     }
     $nbimg = $imgDao->getImgCount();
-    $nbpages = $nbimg%5 == 0? $nbimg/5 : $nbimg/5 + 1;
+      $nbpages = ($nbimg%5 == 0)? $nbimg/5 : ($nbimg/5) + 1;
+    echo "Page " . $_GET['page'] . " <|> ";
     for ($i = 1; $i <= $nbpages; $i++)
     {
       echo "<a class='log2' href='index.php?page=".$i."'> ".$i." </a>";
+
     }
   ?>
 </side>

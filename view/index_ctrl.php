@@ -148,6 +148,8 @@ if(!empty($_POST['resetpwd']))
     $user->setPwd(hash("whirlpool", $_POST['resetpwd']));
     $userDao->update($user);
   }
+  $_POST['resetpwd'] = "";
+  $_GET['reset'] = "";
 }
 if (!empty($_POST['log_out'])){
   session_destroy();

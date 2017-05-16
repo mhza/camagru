@@ -9,7 +9,7 @@
       echo "
       <form class='log' action=\"view/header_ctrl.php\" method=\"post\">
         <label for=\"email\"></label><br>
-          <input placeholder=\"@\" type=\"mail\" name=\"email\"/><br/>
+          <input placeholder=\"@\" type=\"mail\" name=\"email\" pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\"/><br/>
         <label for=\"pwd\"></label><br>
           <input placeholder=\"password\"  type=\"password\" name=\"pwd\"/><br/>
 
@@ -26,48 +26,51 @@
       echo "
       <form class='log' action=\"view/header_ctrl.php\" method=\"post\">
         <label for=\"email\"></label><br>
-          <input placeholder=\"@\" type=\"email\" name=\"email\"/><br/>
+          <input placeholder=\"@\" type=\"email\" name=\"email\" pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\"/><br/>
         <label for=\"login\"></label><br>
           <input placeholder=\"login\" type=\"text\" name=\"login\"/><br/>
         <label for=\"pwd\"></label><br>
-          <input placeholder=\"password\" type=\"password\" name=\"pwd\"/><br/>
+          <input placeholder=\"password\" type=\"password\" name=\"pwd\" pattern=\"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\"/><br/>
         <label for=\"pwd2\"></label><br>
-          <input placeholder=\"confirm password\" type=\"password\" name=\"pwd2\"/><br/>
+          <input placeholder=\"confirm password\" type=\"password\" name=\"pwd2\" pattern=\"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\"/><br/>
 
         <input class='button-bk' type=\"submit\" name=\"clic\"value = \"clic\" /><br/>";
         if (!empty($_GET['ko']))
           echo "Try again</form>";
         else
-          echo "</form>";
+          echo "<br> <span style = 'font-size:small;'>Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.<span></form>";
           echo "<a class='log' href='index.php'> <<< </a>";
     }
     else if (!empty($_GET['initpwd'])){
       echo "
       <form class='log' action=\"index.php\" method=\"post\">
         <label for=\"initpwdmail\"></label><br>
-          <input placeholder=\"@\" type=\"email\" name=\"initpwdmail\" id = 'initpwdmail'/><br/>
+          <input placeholder=\"@\" type=\"email\" name=\"initpwdmail\" id = 'initpwdmail' pattern=\"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$\"/><br/>
         <input onclick = 'inipwdbymail()' class='button-bk' type=\"submit\" name=\"clic\"value = \"send me a link\" /><br/>";
         if (!empty($_GET['ko']))
           echo "Try again</form>";
         else
           echo "</form>";
+          $_GET['initpwd'] = "";
+
           // echo "<a class='log' href='index.php'> <<< </a>";
     }
     else if (!empty($_GET['reset'])){
       echo "
       <form class='log' action=\"index.php\" method=\"post\">
       <label for=\"pwd\"></label><br>
-        <input id='resetpwd' placeholder=\"password\" type=\"password\" name=\"resetpwd\"/><br/>
+        <input id='resetpwd' placeholder=\"password\" type=\"password\" name=\"resetpwd\" pattern=\"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\"/><br/>
       <label for=\"pwd2\"></label><br>
-        <input id='resetpwd2' placeholder=\"confirm password\" type=\"password\" name=\"resetpwd2\"/><br/>
+        <input id='resetpwd2' placeholder=\"confirm password\" type=\"password\" name=\"resetpwd2\" pattern=\"(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}\"/><br/>
       <input onclick = 'resetpwdaction(\"".$_GET['reset']."\", \"".$_GET['key']."\")' class='button-bk' type=\"submit\" name=\"clic\" value = \"reset\" /><br/>";
-          echo "</form>";
+          echo "<span style = 'font-size:small;'>Password must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.<span></form>";
           echo "<a class='log' href='index.php'> <<< </a>";
+
     }
     else {
 
       echo "<a class='log' href='index.php?log_in=1'> LOG IN </a>
-            <a class='log' href=\"index.php?sign_in=1\"> SIGN IN </a>";
+            <a class='log' href=\"index.php?sign_in=1\"> SIGN UP </a>";
     }
 echo "</header>";
 ?>
@@ -107,7 +110,6 @@ function resetpwdaction(mail, key)
     http.onreadystatechange = function() {//Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
              window.location.reload(true);
-
         }
     }
     http.send(params);
